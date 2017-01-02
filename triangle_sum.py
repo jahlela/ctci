@@ -1,80 +1,125 @@
-"""
+
+tri = [ [7],     
+        [3,8],
+        [8, 1, 0],
+        [2, 7, 4, 4],
+        [4, 5, 2, 6, 5]]
 
 
-7
-3 8
-8 1 0
-2 7 4 4
-4 5 2 6 5
+#def is_none(v, st):
+#    if v == None:
+#        print st
+#    return v
 
-[    [7],     
-     [3,8],
-     [8, 1, 0],
-     [2, 7, 4, 4],
-     [4, 5, 2, 6, 5]]
+def ms(idx_tup = None):
 
-    [0]
-   [0,1]
-  [0,1,2]
- [0,1,2,3]
-[0,1,2,3,4]  
-
-0 -> 0 or 1
-1 -> 1 or 2
-2 -> 2 or 3
-3 -> 3 or 4
-
-Sample Output
-30
-
-"""
+    idx_tup = idx_tup or (0,0)
+    height, dist = idx_tup
 
 
+    if len(tri) == 1:
+        current = tri[height][dist]        
+
+        print 'result', current
+        return current
+
+    if height < len(tri):
+        current = tri[height][dist]        
+        left = (height+1, dist)
+        right = (height+1, dist+1)
+        
+        if dist is tri[height][-1]:
+            result = current
+            print 'result', result
+            return result + ms(left)
+
+        result = current + max(ms(left), ms(right))
+        print 'result', result
+        return result
+
+    return 0
+    
+print ms()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+""" 
 def get_max(triangle, idx = 0):
 
-    if len(triangle) == 1:
-        return triangle[0][0]
+    if len(triangle[0]) == 1:
+        return triangle[0][idx]
+
+    current_line = trinagle[-1]
     
-    print 'idx', idx
-    current_line = triangle[-1]
-    print 'current_line', current_line
-
-    idx = current_line.index(max(current_line))
-    current_val = current_line[idx]
+    line_max = max(current_line)
+    idx = current_line[line_max].index()
     
-    print 'current_val', current_val
-    
-    if idx == len(current_line)-1:
-        return current_val + get_max(triangle[:-1], idx-1)
-    elif idx == 0:
-        return current_val + get_max(triangle[:-1], idx)
-    else:
-        return current_val + max( get_max(triangle[:-1], idx) , get_max(triangle[:-1], idx-1) )
+    return max( get_max(triangle[:-1], idx) , get_max(triangle[:-1], idx+1)    )
 
 
-'''
-def get_max(triangle, idx=0, cur = None):
-
-    if len(triangle) == 1:
-        return triangle[0][0]
-
-    max(
-    
-'''
-
-
-
-    
-
-
-
-triangle = [[7],     
-            [3,8],
-            [8, 1, 0],
-            [2, 7, 4, 4],
-            [4, 5, 2, 6, 5]]
-
-print get_max(triangle) - 1
-
-
-
+"""
