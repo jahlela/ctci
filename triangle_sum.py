@@ -1,8 +1,8 @@
 
-tri = [ [7],     
-        [3,8],
-        [8, 1, 0],
-        [2, 7, 4, 4],
+tri = [      [7],     
+            [3, 8],
+           [8, 1, 0],
+         [2, 7, 4, 4],
         [4, 5, 2, 6, 5]]
 
 
@@ -11,6 +11,7 @@ tri = [ [7],
 #        print st
 #    return v
 
+@lru_cache
 def ms(idx_tup = None):
 
     idx_tup = idx_tup or (0,0)
@@ -19,22 +20,18 @@ def ms(idx_tup = None):
 
     if len(tri) == 1:
         current = tri[height][dist]        
-
-        print 'result', current
         return current
 
     if height < len(tri):
         current = tri[height][dist]        
+
         left = (height+1, dist)
         right = (height+1, dist+1)
         
         if dist is tri[height][-1]:
-            result = current
-            print 'result', result
-            return result + ms(left)
+            return current + ms(left)
 
         result = current + max(ms(left), ms(right))
-        print 'result', result
         return result
 
     return 0
