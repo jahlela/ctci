@@ -16,6 +16,8 @@
 f: domain -> image #range only applies to integers
 
 
+
+
 You are to write a program which, given the positions of the villages and the number of post offices,
 computes the least possible sum of all distances between each village and its nearest post office.
 
@@ -33,21 +35,41 @@ its nearest post office.
 
 
 1. Breakdown by integer where the villages are on the highway
-2. po (post offices)
+2. ms (minimum sum of post office distances)
 3. INPUT: Takes as input a list of integers, which represent the positions of villages
    along a highway and a number of post offices
    OUTPUT: Returns the minimum sum of distances between each village and its nearest post office
-4. po: Int -> Int # (array -> Int?)
+4. ms: Int -> Int # (array -> Int?)
 5.
    a. Break down by integer where the villages are on the highway
    b. Iterate over options for where to put post offices
    c. Find minimum sum of distances between each village and its nearest post office
    d. minimum sum
-   e. minimum distance if we choose to put a post office here 
-   e. po(village) = 
+   e. minimum distance if we choose to put a post office here
+   e. villages takes in an index i and outputs villages[i]
+   e. global function villages: Int -> Int
+   e. ms(p, i) = min { ms(p-1, i-1), ms(p-1, i) }
+
+      i = end index for subsequence of array
+      k = number of post offices
+   e. ms(i, k) = ms(i-1, k-1) + ms(len(array), 1)
+   # the minimum sum of array[k:]
+   e. ms takes in i, the end index of a subsequence of the original array, and k, the number of post offices
+      ms outputs the minimum sum, given the subsequence and number of post offices
+
+   minimum sum of distances
 
 
    e. How do we get the value of the choices?
+   e. What if we were changing both the number of villages and the number of post offices?
+
+   - If we put one post office at the last village, and find the minimum for the n-1 villages
+   - Make the invariant of the rr that it returns the minimum dist sum, provided that there is a po at the last village
+
+   - p, villages -> min dist to put p (the #po), provided you have a po at the last village
+
+   e. 
+
    f. Write the recurrence relation ---------- rr(argument) = ....
 
 
@@ -64,26 +86,11 @@ its nearest post office.
 
 
 6. Base: If # of post offices > # of villages, return 0
+   Base: If #po = #villages + 1, return difference between two closest villages
+   Ext: If #po = #v + 2, return sum of difference between two pairs of closest villages
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   
 
 
 
@@ -97,11 +104,11 @@ Q: In how many ways can you tile a 3xn rectangle with 2x1 dominoes?
    Out: number of ways to tile a 3xn rectangle with 2x1 dominoes
 4. dom: Int -> Int
 5.
-   a. breakdown by n, width of rectangle
+   a. breakdown by w, width of rectangle
    b. 3 options: three stacked, top vertical + horizontal, horizontal + bottom vertical
    c. number of ways to tile a 3xn rectangle with 2x1 dominoes
    d. count
-   e. get value of dom(n-1) if we choose stack, top, or bottom
+   e. get value of dom(w-1) or dom(w-1) if we choose stack, top, or bottom
    e. number of ways to tile rectangle, if we choose that option
 
       c(w)  = c(w-2) + 2 * ht(w-1)     # What are the ways to end with a complete column?
