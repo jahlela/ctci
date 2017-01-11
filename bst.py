@@ -10,23 +10,6 @@ class Node(object):
     def __repr__(self):
         return "<__main__.Node object %d>" % (self.data)
 
-    def get_children(self):
-        """ 
-        Returns a list of children, if any, that a node has. Does not include None. 
-
-        >>> node4.get_children()
-        [<__main__.Node object 2>, <__main__.Node object 6>]
-
-        """
-        children = []
-
-        if self.left:
-            children.append(self.left)
-
-        if self.right:
-            children.append(self.right)
-
-        return children
 
     def get_min(self):
         """
@@ -107,7 +90,24 @@ class Node(object):
         if self.right:
             self.right.print_in_order()
 
-            
+    def get_children(self):
+        """ 
+        Returns a list of children, if any, that a node has. Does not include None. 
+
+        >>> node4.get_children()
+        [<__main__.Node object 2>, <__main__.Node object 6>]
+
+        """
+        children = []
+
+        if self.left:
+            children.append(self.left)
+
+        if self.right:
+            children.append(self.right)
+
+        return children
+
     def dfs(self, value):
         """ 
         Returns the node with the value or False if not found 
@@ -233,7 +233,50 @@ class Node(object):
 
         return ok(self, None, None)
 
+    def is_balanced(self):
+        """
+        Returns a boolean for whether the tree is balanced
+        i.e. the difference between the min leaf depth and the max leaf depth is 1 or less
 
+        >>> node4.is_balanced()
+        True
+
+        >>> node18 = Node(18)
+        >>> node17 = Node(17, None, node18)
+        >>> node16 = Node(16, None, node17)
+        >>> node15 = Node(15, None, node16)
+        >>> node15.is_balanced()
+        False
+        """
+
+        depths = []
+
+        nodes = [(self, 0)]
+
+        while len(nodes):
+            node, depth = nodes.pop()
+            
+            if not node.left and not node.right:
+                
+                if depth not in depths:
+                    depths.append(depth)
+
+                    # Check for imbalances
+                    if len(depths) > 2:
+                        return False
+                    if len(depths) == 2 and abs(depths[0] - depths[1]) > 1:
+                        return False
+
+            else:
+                if node.left:
+                    nodes.append((node.left, depth + 1))
+
+                if node.right:
+                    nodes.append((node.right, depth + 1))
+
+        return True
+
+                            
 node7 = Node(7)
 node5 = Node(5)
 node6 = Node(6, node5, node7)
@@ -241,7 +284,9 @@ node1 = Node(1)
 node3 = Node(3)
 node2 = Node(2, node1, node3)
 node4 = Node(4, node2, node6)
-    
+
+
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
