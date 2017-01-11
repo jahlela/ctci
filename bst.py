@@ -34,15 +34,11 @@ class Node(object):
         >>> node4.get_max()
         7
         """
+        if self.right:
+            self.right.get_max()
 
-        if not self:
-            return None
-
-        if self.right is None:
-            return self.data
-        else:
-            return self.right.get_max()
-
+        return self.data
+        
 
     def is_in_tree(self, value):
         """
@@ -276,7 +272,19 @@ class Node(object):
 
         return True
 
-                            
+
+    def find_second_largest(self):
+        """
+        
+        >>> node4.
+        """
+        
+        if not self.get_children():
+            return None
+
+        max = self.get_max()
+        print max
+    
 node7 = Node(7)
 node5 = Node(5)
 node6 = Node(6, node5, node7)
