@@ -1,12 +1,23 @@
 class Node(object):
 
-    def __INIT__(self, data=None, left=None, right=None):
+    def __init__(self, data=None, left=None, right=None):
+        """ """
+        
         self.data = data
         self.left = left 
         self.right = right
 
+    def __repr__(self):
+        return "<__main__.Node object %d>" % (self.data)
+
     def get_children(self):
-        """ Returns a list of children, if any, that a node has. Does not include None. """
+        """ 
+        Returns a list of children, if any, that a node has. Does not include None. 
+
+        >>> node4.get_children()
+        [<__main__.Node object 2>, <__main__.Node object 6>]
+
+        """
         children = []
 
         if self.left:
@@ -17,36 +28,77 @@ class Node(object):
 
         return children
 
+    def get_min(self):
+        """
+        Returns value of smallest node.
 
-    def insert(self, value):
-        if value <= self.data:
-            if self.left:
-                self.left.insert(value)
-            else:
-                self.left = Node(value)
+        >>> node4.get_min()
+        1
+        """
 
+        if not self:
+            return None
+
+        if self.left is None:
+            return self.data
         else:
-            if self.right:
-                self.right.insert(value)
-            else:
-                self.right = Node(value)
+            return self.left.get_min()
+
+    def get_max(self):
+        """
+        Returns value of largest node.
+
+        >>> node4.get_max()
+        7
+        """
+
+        if not self:
+            return None
+
+        if self.right is None:
+            return self.data
+        else:
+            return self.right.get_max()
 
 
-    def find(self, value):
+    def is_in_tree(self, value):
+        """
+        Returns a boolean for whether the value is in the tree.
+
+        >>> node4.is_in_tree(2)
+        True
+        
+        >>> node4.is_in_tree(8)
+        False
+        """
+        
         if self.data == value:
             return True
 
         if value <= self.data:
             if self.left:
-                return self.left.find(value)
+                return self.left.is_in_tree(value)
         else:
             if self.right:
-                return self.right.find(value)
+                return self.right.is_in_tree(value)
 
         return False
 
     
     def print_in_order(self):
+        """
+        Prints everything in the tree on a new line from smalles to largest
+
+        >>> node4.print_in_order() 
+        1
+        2
+        3
+        4
+        5
+        6
+        7
+
+        """
         if self.left:
             self.left.print_in_order()
 
@@ -57,7 +109,29 @@ class Node(object):
 
             
     def dfs(self, value):
-        """ Returns the node with the value or False if not found """
+        """ 
+        Returns the node with the value or False if not found 
+        >>> node4.dfs(2)
+        looking for:  2
+        checked 4
+        checked 6
+        checked 7
+        checked 5
+        <__main__.Node object 2>
+
+        >>> node4.dfs(8)
+        looking for:  8
+        checked 4
+        checked 6
+        checked 7
+        checked 5
+        checked 2
+        checked 3
+        checked 1
+        False
+
+        """
+        
         print 'looking for: ', value
         to_visit = [self]
 
@@ -73,7 +147,26 @@ class Node(object):
         return False
 
     def bfs(self, value):
-        """ Returns the node with the value or False if not found """
+        """ 
+        Returns the node with the value or False if not found 
+
+        >>> node4.bfs(2)
+        looking for:  2
+        checked 4
+        <__main__.Node object 2>
+
+        >>> node4.bfs(8)
+        looking for:  8
+        checked 4
+        checked 2
+        checked 6
+        checked 1
+        checked 3
+        checked 5
+        checked 7
+        False
+        
+        """
         print 'looking for: ', value
         to_visit = [self]
 
@@ -97,6 +190,19 @@ class Node(object):
             
             lt: left children must be <= this
             gt: right child must be >= this
+
+            >>> Node.is_valid(node4)
+            True
+
+            >>> node6.left = node7
+            >>> node6.right = node5
+            >>> Node.is_valid(node4)
+            False
+
+            Reset to valid tree
+            >>> node6.left = node5
+            >>> node6.right = node7
+
             """
 
             # base case: this isn't a node
@@ -113,30 +219,19 @@ class Node(object):
 
             # general case: check our left child
             # all descendants of left child must be
-            # less than our data (and greater than
-            # whatever we had to be greater than).
-            # if not, fail fast.
-            if not ok(node.left, node.data, gt ):
+            # less than our data
+            if not ok(node.left, node.data, gt):
                 return False
-
 
             # general case: check our right child
             # all descendants of right child must be
-            # greater than our data (and less than
-            # whatever we had to be less than)
-            # if not, fail fast.
+            # greater than our data 
             if not ok(node.right, lt, node.data):
                 return False
 
             return True
 
         return ok(self, None, None)
-
-class TNode(object):
-    def __INIT__(self, cat, fish, monk):
-        self.left = cat
-        self.right = fish
-        self.data = monk
 
 
 node7 = Node(7)
@@ -146,14 +241,7 @@ node1 = Node(1)
 node3 = Node(3)
 node2 = Node(2, node1, node3)
 node4 = Node(4, node2, node6)
-
-print '\nnode4.find(2)', node4.find(2)
-print '\nnode4.find(8)', node4.find(8)
-print '\nnode4.print_in_order()', node4.print_in_order()
-print '\nnode4.dfs(2)', node4.dfs(2)
-print '\nnode4.bfs(2)', node4.bfs(2)
-print '\nvalid:', Node.is_valid(node4)
-
-
-
     
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
