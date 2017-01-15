@@ -13,26 +13,24 @@ def lis(arr):
     >>> arr = []
     0
 
-    """
-
+"""   
     counts = [1]*len(arr)
 
-    # Start two from arr[-2], because arr[-1] is guaranteed to be 1, and work backwards    
+    # Start from arr[-2], because arr[-1] is guaranteed to be 1, then work backwards    
     for i in xrange( len(arr) -2, -1, -1):
-        possibles = []
-        # Check if head is less than each value that follows it
+        max_seen = 1
+        
         for j in range(i+1,len(arr)):
             # Check if head is less than each value that follows it
+            # Update max_seen if the new count is larger
             if arr[i] < arr[j]:
-                # If so, add the count at that index to possible_counts
-                possibles.append(1 + counts[j])
+                max_seen = max(1 + counts[j], max_seen)
                 
-        # Update counts at i to be the max of possible lengths        
-        counts[i] = max(possibles)
+        # Update counts at i to be max possible length seen
+        counts[i] = max_seen
         
-    # Answer is the maximum possible subsequence from counts
     return max(counts)
 
 
-
-    
+arr = [10, 22, 9, 33, 21, 50, 41, 60, 80]
+print lis(arr)
