@@ -1,4 +1,3 @@
-
 def my_change(total, coins):
     ways = [1] + [0]*(total)
 
@@ -8,6 +7,7 @@ def my_change(total, coins):
         for i in range(coin, total + 1):
             ways[i] += ways[i - coin]
 
+    print ways
     return ways[total]
 
 
